@@ -7,18 +7,27 @@ const User = require("../models/user");
 const router = express.Router();
 
 router.post("/register", function(req, res) {
-        
-    console.log("i'm here");
-    
+    // console.log("i'm here");
       const userdata = new User({
         name: req.body.name,
         username: req.body.username,
       });
-
       userdata.save().then(createdUser => {
-          res.status(201).json(createdUser);
+          res.status(201).json({data: true});
       })
       .catch(error => {
+        res.status(500).json(error);
+    });
+  }
+);
+
+router.get("/login", function(req, res) {
+      User.findOne({"username" : req.body.username})
+      .then(doc => {
+          res.status(201).json({data : doc});
+      })
+      .catch(error => {
+        res.status(500).json(error);
       });
   }
 );
@@ -38,7 +47,6 @@ router.put(
         .catch(error=>{
             res.status(500).json(error);
         });
-        // res.status(200).json(req.params.username);
     }
 )
 
@@ -57,7 +65,6 @@ router.put(
         .catch(error=>{
             res.status(500).json(error);
         });
-        // res.status(200).json(req.params.username);
     }
 )
 router.put(
@@ -75,7 +82,6 @@ router.put(
         .catch(error=>{
             res.status(500).json(error);
         });
-        // res.status(200).json(req.params.username);
     }
 )
 
