@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <meta charset="utf-8">
+        <!-- importer le fichier de style -->
+        <title>Login</title>
+        <link rel="stylesheet" href="style3.css" media="screen" type="text/css" />
+    </head>
+    <body>
+        <div class="row">
+            <ul class="main-nav">
+                <li class="active"><a href="gameHome.html">HOME</a></li> 
+            </ul></div>
+        <div id="container">
+            <!-- zone de connexion -->    
+            <form onsubmit="loginBtn()">
+                <h1> Let's Login </h1>
+                
+                <label><b>User Name</b></label>
+                <input type="text" placeholder=" Your username Or email" id="username" name="username" required>
+
+                <label><b>Password</b></label>
+                <input type="password" placeholder="Your password" id="password" name="password" required>
+
+                <input type="submit" id='submit' value='LOGIN' >
+            
+            </form>
+        </div>
+
+        <script>
+            function loginBtn(){
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = () => {
+                    if(xhttp.readyState == 4 && (xhttp.status == 200 || xhttp.status == 201) ) {
+                        alert("login successful");
+                        window.location.href = "http://localhost:3000/home";
+                        // console.log(xhttp.response);
+                    } else if(xhttp.readyState == 4) {
+                    }
+                    else{
+                        alert("login successful");
+                        window.location.replace("http://localhost:3000/home");
+                    }
+                }
+                // xhttp.open("PUT", "/game1/:username")
+                xhttp.open("GET", "http://localhost:3000/api/users/login")
+                // xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                var username= document.getElementById("username").value;
+                var password= document.getElementById("password").value;
+                console.log(username, password);                
+                var data = JSON.stringify({"username": username});
+                console.log(data);
+                xhttp.send(data);
+            }
+        </script>
+    </body>
+</html>
