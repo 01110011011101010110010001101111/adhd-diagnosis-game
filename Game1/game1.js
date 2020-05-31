@@ -164,6 +164,7 @@ document.getElementById("clickN").addEventListener("click", () => {
     c.fillText(`You rate ${Math.round(1/(avgY)*100)}% on self-focus.`, b.width / 2, b.height / 2 + 60)
     // The big number is the distribution.
     let xhttp = new XMLHttpRequest()
+    xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.onreadystatechange = () => {
         if(xhttp.readyState == 4 && xhttp.status == 200) {
             // Yay! The database has synced with us!
@@ -174,11 +175,14 @@ document.getElementById("clickN").addEventListener("click", () => {
             document.getElementById("quickT").style.background = "red"    
         }
     }
-    xhttp.open("POST", "/game1/:username")
+    // xhttp.open("PUT", "/game1/:username")
+    xhttp.open("PUT", "/game1/un4")
     document.getElementById("sync").style.opacity = 1
     document.getElementById("quickT").style.opacity = 1
     console.log(Math.round(1/(avgY)*100)*0.75 + Math.round((swimmersAcross / 6)*100)*0.25)
-    xhttp.send(`self-focus=${Math.round(1/(avgY)*100)*0.75 + Math.round((swimmersAcross / 6)*100)*0.25}`)
+    var data = JSON.stringify({"score": Math.round(1/(avgY)*100)*0.75 + Math.round((swimmersAcross / 6)*100)*0.25});
+    xhr.send(data);
+
     c.fillText(`You rate ${Math.round((swimmersAcross / 6)*100)}% on using your tokens efficiently.`, b.width / 2, b.height / 2 + 100)
 })
 // Add event listener for `click` events.

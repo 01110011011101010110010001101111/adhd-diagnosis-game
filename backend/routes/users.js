@@ -22,8 +22,14 @@ router.post("/register", function(req, res) {
 );
 
 router.get("/login", function(req, res) {
+    console.log("Hi");
+    console.log(req.body);
+    
+    console.log(req.body.username);
+    
       User.findOne({"username" : req.body.username})
       .then(doc => {
+          console.log("login success");
           res.status(201).json({data : doc});
       })
       .catch(error => {
