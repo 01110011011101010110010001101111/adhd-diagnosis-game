@@ -47,6 +47,7 @@ class Person {
         // Pos - Their beginning position
         this.pos = pos
         this.speed = 0.5
+        this.clickUpSpeed = 0
         this.madeToOtherSide = false
     }
     draw() {
@@ -129,7 +130,7 @@ const startSwimming = () => {
         // Stop
         // Put the time out in.
         c.beginPath()
-        c.fillStyle = "white"
+        c.fillStyle = "black"
         c.textAlign = "center"
         c.font = "30px Roboto"
         c.fillText("Time's Up!", b.width/2, b.height/2)
@@ -146,26 +147,39 @@ document.getElementById("clickN").addEventListener("click", () => {
     swimmersAcross = 0
     for(let i = 0; i < swimmers.length; i++) {
         // Reset. Save the swimmer's y position and look at the average distribution.
-        avgY += swimmers[i].pos[1]
+        avgY += swimmers[i].clickUpSpeed
         if(swimmers[i].madeToOtherSide) {
             swimmersAcross++
         }
     }
-    avgY = avgY / swimmers.length
-    distribution = 0
-    for(let i = 0; i < swimmers.length; i++) {
-        distribution += Math.abs(swimmers[i].pos[1] - avgY)
-    }
-    // An average score would be around 360.
-    distribution /= 3.6
+    avgY /= swimmers.length
+    // avgY is the slope, and our 
+    // distribution is 1/avyY.
     // Also, not doing anything would make us do well.
     // So we need to weight how many we get across.
     c.beginPath()
     c.fillStyle = "black"
     c.textAlign = "center"
     c.font = "15px Roboto"
-    c.fillText(`You rate ${Math.round(distribution)} on self-focus; the lower the number, the better. A good average is 500-1000.`, b.width / 2, b.height / 2 + 60)
-    c.fillText(`You rate ${Math.round((swimmersAcross / 6)*100)}/100 on using your tokens efficiently.`, b.width / 2, b.height / 2 + 100)
+    c.fillText(`You rate ${Math.round(1/(avgY)*100)}% on self-focus.`, b.width / 2, b.height / 2 + 60)
+    // The big number is the distribution.
+    let xhttp = new XMLHttpRequest()
+    xhttp.onreadystatechange = () => {
+        if(xhttp.readyState == 4 && xhttp.status == 200) {
+            // Yay! The database has synced with us!
+            document.getElementById("sync").style.opacity = 0
+            document.getElementById("quickT").style.opacity = 0
+        } else if(xhttp.readyState == 4) {
+            document.getElementById("sync").style.opacity = 0
+            document.getElementById("quickT").style.background = "red"    
+        }
+    }
+    xhttp.open("POST", "/game1/:username")
+    document.getElementById("sync").style.opacity = 1
+    document.getElementById("quickT").style.opacity = 1
+    console.log(Math.round(1/(avgY)*100)*0.75 + Math.round((swimmersAcross / 6)*100)*0.25)
+    xhttp.send(`self-focus=${Math.round(1/(avgY)*100)*0.75 + Math.round((swimmersAcross / 6)*100)*0.25}`)
+    c.fillText(`You rate ${Math.round((swimmersAcross / 6)*100)}% on using your tokens efficiently.`, b.width / 2, b.height / 2 + 100)
 })
 // Add event listener for `click` events.
 function clickEv(event) {
@@ -180,6 +194,7 @@ function clickEv(event) {
                     // We've run out of tokens.
                 } else if(Math.round(timeCount * 100) / 100 >= 0) {
                     swimmers[pos].speed += 1
+                    swimmers[pos].clickUpSpeed += 1
                     amount--
                 }
             }
@@ -193,6 +208,8 @@ document.getElementById("clickI").addEventListener("click", () => {
     // Let everything fade away.
     document.getElementById("clickI").style.opacity = 0;
     document.getElementById("intro").style.opacity = 0;
+    document.getElementById("clickI").style.display = "none";
+    document.getElementById("intro").style.display = "none";
     b.style.filter = "brightness(100%)";
     rStart = requestAnimationFrame(startSwimming)
     // startSwimming()
