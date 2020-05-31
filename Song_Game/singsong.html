@@ -137,6 +137,7 @@
         const b = document.getElementById("a");
         const c = b.getContext("2d");
         let score = 0;
+        let error_count = 0;
         b.width = window.innerWidth;
         b.height = window.innerHeight;
         // c.fillRect(0, 0, b.width, b.height);
@@ -221,7 +222,7 @@ How I Wonder What You Are`
                     }
                 }, 1000);
             } else {
-                document.getElementById("output").innerHTML = "WRONG: TRY AGAIN";
+                document.getElementById("output").innerHTML = "WRONG: TRY AGAIN <br> Number of Errors " + (++error_count);
                 score+=10;
                 if (score > 100) score = 100;
                 i = 0;
