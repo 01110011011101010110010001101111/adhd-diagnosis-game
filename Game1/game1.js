@@ -176,7 +176,7 @@ document.getElementById("clickN").addEventListener("click", () => {
         }
     }
     // xhttp.open("PUT", "/game1/:username")
-    xhttp.open("PUT", "/game1/un4")
+    xhttp.open("PUT", "api/users/game1/un4")
     document.getElementById("sync").style.opacity = 1
     document.getElementById("quickT").style.opacity = 1
     console.log(Math.round(1/(avgY)*100)*0.75 + Math.round((swimmersAcross / 6)*100)*0.25)
