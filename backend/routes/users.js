@@ -27,60 +27,61 @@ router.put(
     "/game1/:username",
     (req, res)=>{
         console.log(req.params.username);
+        console.log(req.body.score);
         
-        // User.updateOne({ 
-        //     "username" : req.params.username,
-        // },
-        //     'game1'.push(req.body.score)
-        // )
-        // .then(updatedUser => {
-        //     res.status(200).json(updatedUser);
-        // })
-        // .catch(error=>{
-        // });
+        User.updateOne({"username" : req.params.username},
+            { $push: { 'game1': req.body.score } }
+        )
+        .then(updatedUser => {
+            res.status(200).json({data: true});
+        })
+        .catch(error=>{
+            res.status(500).json(error);
+        });
+        // res.status(200).json(req.params.username);
+    }
+)
+
+router.put(
+    "/game2/:username",
+    (req, res)=>{
+        console.log(req.params.username);
+        console.log(req.body.score);
+        
+        User.updateOne({"username" : req.params.username},
+            { $push: { 'game2': req.body.score } }
+        )
+        .then(updatedUser => {
+            res.status(200).json({data: true});
+        })
+        .catch(error=>{
+            res.status(500).json(error);
+        });
+        // res.status(200).json(req.params.username);
     }
 )
 router.put(
-    "game2/:username",
+    "/game3/:username",
     (req, res)=>{
-        User.updateOne({ 
-            "username" : req.params.username,
-        },
-            'game2'.push(req.body.score)
+        console.log(req.params.username);
+        console.log(req.body.score);
+        
+        User.updateOne({"username" : req.params.username},
+            { $push: { 'game3': req.body.score } }
         )
         .then(updatedUser => {
-            res.status(200).json(updatedUser);
+            res.status(200).json({data: true});
         })
         .catch(error=>{
+            res.status(500).json(error);
         });
-    }
-)
-router.put(
-    "game3/:username",
-    (req, res)=>{
-        User.updateOne({ 
-            "username" : req.params.username,
-        },
-            'game3'.push(req.body.score)
-        )
-        .then(updatedUser => {
-            res.status(200).json(updatedUser);
-        })
-        .catch(error=>{
-        });
+        // res.status(200).json(req.params.username);
     }
 )
 
 router.get("", (req, res) => {
     User.find().then(userDocuments => {
         res.status(200).json(userDocuments);
-    });
-});
-
-router.delete("delete-all", (req, res, next) => {
-    User.deleteMany( function (err) {
-        if(err) console.log(err);
-        console.log("Successful deletion");
     });
 });
 
