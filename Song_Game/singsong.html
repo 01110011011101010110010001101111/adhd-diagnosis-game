@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #a {
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: -1;
+            }
+            #words {
+                width: 85%;
+                height: 10vh;
+                font-size: 2em;
+                position: fixed;
+                /* bottom: 0; */
+                top: 85vh;
+            }
+            #submitt {
+                width: 14%;
+                height: 10vh;
+                font-size: 2em;
+                position: fixed;
+                top: 85vh;
+                right: 0;
+            }
+            #fowl {
+                float: right;
+                margin-right: 5vw;
+            }
+            #mowl {
+                margin-left: 5vw;
+            }
+            #output {
+                text-align: center;
+            }
+            .speech-bubble {
+                position: relative;
+                background: #00aabb;
+                border-radius: .4em;
+                width: 25%;
+                /* height: 10vh; */
+                text-align: center;
+                padding: 5vh;
+            }
+            .speech-bubble:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 0;
+                height: 0;
+                border: 20px solid transparent;
+                border-bottom-color: #00aabb;
+                border-top: 0;
+                border-left: 0;
+                margin-left: -10px;
+                margin-top: -20px;
+            }
+            .speech-bubble1 {
+                float: right;
+                position: relative;
+                background: #00aabb;
+                border-radius: .4em;
+                width: 25%;
+                text-align: center;
+                padding: 5vh;
+                top: -20vh;
+            }
+
+            .speech-bubble1:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 0;
+                height: 0;
+                border: 20px solid transparent;
+                border-bottom-color: #00aabb;
+                border-top: 0;
+                border-right: 0;
+                margin-left: -10px;
+                margin-top: -20px;
+            }
+            #speech {
+                display: inline-block;
+                width: 100vw;
+                /* height: 100vh; */
+            }
+            #background {
+                z-index: 1000;
+                background-color: #00aabb;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            #inst {
+                color: white;
+                text-align: center;
+            }
+            #skip {
+                float:right;
+                width: 100px;
+                height: 50px;
+                margin-right: 10px;
+            }
+            #video {
+                margin-left: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- <div id></div> -->
+        <div id = "background">
+            <h1 id = "inst">Instructions<br>Listen to the song then, with the owls, try to repeat the song, word-by-word.</h1>
+            <iframe id = "video" width="966" height="543" src="https://www.youtube.com/embed/yCjJyiqpAuU" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <button id = "skip">NEXT</button>
+        </div>
+        <canvas id="a"></canvas>
+        <img id = "mowl" src = "male-owl.png" width="220" height="277">
+        <img id="fowl" src="female-owl.png" width="220" height="277">
+        <h1 id="output"></h1>
+        <div id="speech">
+            <div class="speech-bubble">
+                <h1 id = "one"></h1>
+            </div>
+            <div class="speech-bubble1">
+                <h1 id = "two"></h1>
+            </div>
+        </div>
+        <input type="text" id="words" placeholder = "Enter the next word when it's your turn"><input type="submit" id="submitt">
+    </body>
+    <script>
+        const b = document.getElementById("a");
+        const c = b.getContext("2d");
+        let score = 0;
+        let error_count = 0;
+        b.width = window.innerWidth;
+        b.height = window.innerHeight;
+        // c.fillRect(0, 0, b.width, b.height);
+        var img = document.getElementById("fowl");
+        c.drawImage(img, 200, 200);
+        let start = new Date(), end = new Date(), score2 = end-start;
+
+        // Logic
+        // var fr = new FileReader();
+        // fr.onload = function () {
+        //     document.getElementById('output')
+        //         .textContent = fr.result;
+        // }
+        // fr.readAsText("song.txt"); 
+        let text = `Twinkle Twinkle Little Star
+How I Wonder What You Are
+Up Above the World So High
+Like a Diamond in the Sky
+Twinkle Twinkle Little Star
+How I Wonder What You Are`
+        let words = text.toLowerCase().split(" ").join("\n").split("\n");
+        console.log(words);
+        let i = 0;
+        let stop = (x) => clearInterval(x);
+        document.getElementById("skip").addEventListener("click", () => {
+            end = new Date();
+            score2 = end-start;
+            if (score2 > 150000) score2 = 0;
+            else score2 = 1 - (150000-score2)/150000
+            document.getElementById("background").hidden = true;
+            let x = setInterval(() => {
+                // document.getElementById("output").innerHTML = words[i++];
+                if (i % 3 == 0) {
+                    console.log("Owl1");
+                    document.getElementById("one").innerHTML = words[i++];
+                    document.getElementById("two").innerHTML = "";
+                } else if (i % 3 == 1) {
+                    console.log("Owl2");
+                    document.getElementById("two").innerHTML = words[i++];
+                    document.getElementById("one").innerHTML = "";
+                }
+                if (i % 3 == 2) {
+                    stop(x);
+                }
+                if (i >= words.length) {
+                    console.log("HERE");
+                    document.getElementById("output").innerHTML = "FIN";
+                    stop(x);
+                }
+            }, 1000);
+        });
+        document.getElementById("submitt").addEventListener("click", () => {
+            if (document.getElementById("words").value == words[i]) {
+                i+=1;
+                let x = setInterval(() => {
+                    if (i%3 == 0) {
+                        console.log("Owl1");
+                        document.getElementById("one").innerHTML = words[i++];
+                        document.getElementById("two").innerHTML = "";
+                    } else if (i%3 == 1) {
+                        console.log("Owl2");
+                        document.getElementById("two").innerHTML = words[i++];
+                        document.getElementById("one").innerHTML = "";
+                    }
+                    if (i % 3 == 2) {
+                        stop(x);
+                    }
+                    if (i >= words.length) {
+                        console.log("HERE");
+                        document.getElementById("output").innerHTML = "Nice! Your Score is " + score;
+                        let xhttp = new XMLHttpRequest()
+                        xhttp.onreadystatechange = () => {
+                            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                                // All is good
+                            }
+                        }
+                        // let scores = [score, score2];
+                        xhttp.open("POST", "updateScore", true)
+                        xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded")
+                        xhttp.send(`score=${(score+score2)/2}`)
+                        stop(x);
+                    }
+                }, 1000);
+            } else {
+                document.getElementById("output").innerHTML = "WRONG: TRY AGAIN <br> Number of Errors " + (++error_count);
+                score+=10;
+                if (score > 100) score = 100;
+                i = 0;
+            }
+            document.getElementById("words").value = "";
+        });
+    </script>
+</html>
