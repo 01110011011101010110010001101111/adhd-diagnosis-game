@@ -136,7 +136,7 @@
     <script>
         const b = document.getElementById("a");
         const c = b.getContext("2d");
-        let score = 100;
+        let score = 0;
         b.width = window.innerWidth;
         b.height = window.innerHeight;
         // c.fillRect(0, 0, b.width, b.height);
@@ -164,6 +164,8 @@ How I Wonder What You Are`
         document.getElementById("skip").addEventListener("click", () => {
             end = new Date();
             score2 = end-start;
+            if (score2 > 150000) score2 = 0;
+            else score2 = 1 - (150000-score2)/150000
             document.getElementById("background").hidden = true;
             let x = setInterval(() => {
                 // document.getElementById("output").innerHTML = words[i++];
@@ -211,15 +213,17 @@ How I Wonder What You Are`
                                 // All is good
                             }
                         }
+                        // let scores = [score, score2];
                         xhttp.open("POST", "updateScore", true)
                         xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded")
-                        xhttp.send(`score=${score}&score2=${score2}`)
+                        xhttp.send(`score=${(score+score2)/2}`)
                         stop(x);
                     }
                 }, 1000);
             } else {
                 document.getElementById("output").innerHTML = "WRONG: TRY AGAIN";
-                score-=10;
+                score+=10;
+                if (score > 100) score = 100;
                 i = 0;
             }
             document.getElementById("words").value = "";
