@@ -33,7 +33,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.static(__dirname + '/index.html'));
+// app.use(express.static(__dirname + '/index.html'));
+app.use(express.static(path.join(__dirname, 'adimad')));
 
 const apiUser = require("./backend/routes/users");
 const apiGame = require("./backend/routes/game");
@@ -41,8 +42,19 @@ const apiGame = require("./backend/routes/game");
 app.use('/api/users',apiUser);
 app.use('/api/games',apiGame);
 
+
+
+app.get('/signup', (req,res) => {
+    res.sendFile(path.join(__dirname, 'adimad', 'signUp.html'))
+});
+// app.get('/*', (req,res) => {
+//     res.sendFile(path.join(__dirname, '', 'index.html'))
+// });
+// app.get('/*', (req,res) => {
+//     res.sendFile(path.join(__dirname, '', 'index.html'))
+// });
 app.get('/*', (req,res) => {
-    res.sendFile(path.join(__dirname, '', 'index.html'))
+    res.sendFile(path.join(__dirname, 'adimad', 'Adhd.html'))
 });
 
 app.listen(process.env.PORT || 3000)

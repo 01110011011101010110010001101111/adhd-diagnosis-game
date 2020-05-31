@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-color: rgb(109, 88, 191);
+        }
+
+        body {
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        #a {
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            opacity: 1;
+            filter: brightness(50%);
+            transition: 0.25s;
+            z-index: -1;
+        }
+
+        #intro {
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            letter-spacing: 2px;
+            font-size: 15px;
+            opacity: 1;
+            transition: 0.25s;
+            pointer-events: none;
+        }
+
+        .d {
+            font-family: "Roboto", sans-serif;
+            outline: none;
+            border: 2px solid var(--main-color);
+            letter-spacing: 2px;
+            transition: 0.25s;
+            opacity: 0;
+            color: var(--main-color);
+            background: white;
+            padding: 10px;
+        }
+
+        .d:hover {
+            background: var(--main-color);
+            color: white;
+        }
+
+        .t {
+            width: 7em;
+            height: 3em;
+            letter-spacing: 2px;
+            background: var(--main-color);
+            border-radius: 2em;
+            color: white;
+            position: fixed;
+            box-shadow: 0.1em 0.1em 5px 0 rgba(0, 0, 0, 0.3);
+            font-family: "Roboto";
+            left: 100%;
+            text-align: right;
+            line-height: 3em;
+            padding-right: 0.7em;
+            top: 100%;
+            margin-top: -4em;
+            margin-left: -8em;
+        }
+
+        #remainingFood {
+            margin-top: -8em;
+        }
+
+        #remainingTime {
+            margin-top: -4em;
+        }
+
+        #clickN {
+            opacity: 1;
+            position: fixed;
+            border: 2px solid var(--main-color);
+            outline: none;
+            background: var(--main-color);
+            color: white;
+            text-align: center;
+            width: 10em;
+            opacity: 0;
+            transition: 0.25s;
+            top: 50%;
+            margin-top: 1em;
+            left: 50%;
+            margin-left: -5em;
+            pointer-events: none;
+        }
+
+        #clickN:hover {
+            transform: rotate(5deg);
+        }
+
+        .sync {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 3em;
+            height: 3em;
+            border-radius: 100%;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--main-color);
+            animation-name: a;
+            animation-duration: 0.5s;
+            pointer-events: none;
+            animation-timing-function: linear;
+            opacity: 0;
+            top: 100%;
+            left: 100%;
+            transition: 0.25s;
+            margin-left: -13em;
+            margin-top: -8em;
+            animation-iteration-count: infinite;
+        }
+        #quickT {
+            position: fixed;
+            top: 100%;
+            left: 100%;
+            margin-left: -15em;
+            color: white;
+            margin-top: -3em;
+            font-family: "Roboto";
+            width: 7em;
+            opacity: 0;
+            transition: 0.25s;
+            pointer-events: none;
+            text-align: center;
+            font-style: italic;
+        }
+        @keyframes a {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="intro"></div>
+    <br>
+    <button id="clickI" class="d">Continue</button>
+    <button id="clickN" class="d">See My Score</button>
+    <canvas id="a"></canvas>
+    <div id="remainingFood" class="t">TOKENS</div>
+    <div id="remainingTime" class="t">TIME</div>
+    <div class="sync" id="sync"></div><div id="quickT">Syncing with our database...</div>
+    <script src="game1.js"></script>
+</body>
+
+</html>
