@@ -87,9 +87,38 @@
                 width: 100vw;
                 /* height: 100vh; */
             }
+            #background {
+                z-index: 1000;
+                background-color: #00aabb;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            #inst {
+                color: white;
+                text-align: center;
+            }
+            #skip {
+                float:right;
+                width: 100px;
+                height: 50px;
+                margin-right: 10px;
+            }
+            #video {
+                margin-left: 50px;
+            }
         </style>
     </head>
     <body>
+        <!-- <div id></div> -->
+        <div id = "background">
+            <h1 id = "inst">Instructions<br>Listen to the song then, with the owls, try to repeat the song, word-by-word.</h1>
+            <iframe id = "video" width="966" height="543" src="https://www.youtube.com/embed/yCjJyiqpAuU" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <button id = "skip">NEXT</button>
+        </div>
         <canvas id="a"></canvas>
         <img id = "mowl" src = "male-owl.png" width="220" height="277">
         <img id="fowl" src="female-owl.png" width="220" height="277">
@@ -102,16 +131,18 @@
                 <h1 id = "two"></h1>
             </div>
         </div>
-        <input type="text" id="words"><input type="submit" id="submitt">
+        <input type="text" id="words" placeholder = "Enter the next word when it's your turn"><input type="submit" id="submitt">
     </body>
     <script>
         const b = document.getElementById("a");
         const c = b.getContext("2d");
+        let score = 100;
         b.width = window.innerWidth;
         b.height = window.innerHeight;
         // c.fillRect(0, 0, b.width, b.height);
         var img = document.getElementById("fowl");
         c.drawImage(img, 200, 200);
+        let start = new Date(), end = new Date(), score2 = end-start;
 
         // Logic
         // var fr = new FileReader();
@@ -130,29 +161,34 @@ How I Wonder What You Are`
         console.log(words);
         let i = 0;
         let stop = (x) => clearInterval(x);
-        let x = setInterval(() => {
-            // document.getElementById("output").innerHTML = words[i++];
-            if (i % 3 == 0) {
-                console.log("Owl1");
-                document.getElementById("one").innerHTML = words[i++];
-                document.getElementById("two").innerHTML = "";
-            } else if (i % 3 == 1) {
-                console.log("Owl2");
-                document.getElementById("two").innerHTML = words[i++];
-                document.getElementById("one").innerHTML = "";
-            }
-            if (i % 3 == 2) {
-                stop(x);
-            }
-            if (i >= words.length) {
-                console.log("HERE"); 
-                document.getElementById("output").innerHTML = "FIN";
-                stop(x);
-            }
-        }, 1000);
+        document.getElementById("skip").addEventListener("click", () => {
+            end = new Date();
+            score2 = end-start;
+            document.getElementById("background").hidden = true;
+            let x = setInterval(() => {
+                // document.getElementById("output").innerHTML = words[i++];
+                if (i % 3 == 0) {
+                    console.log("Owl1");
+                    document.getElementById("one").innerHTML = words[i++];
+                    document.getElementById("two").innerHTML = "";
+                } else if (i % 3 == 1) {
+                    console.log("Owl2");
+                    document.getElementById("two").innerHTML = words[i++];
+                    document.getElementById("one").innerHTML = "";
+                }
+                if (i % 3 == 2) {
+                    stop(x);
+                }
+                if (i >= words.length) {
+                    console.log("HERE");
+                    document.getElementById("output").innerHTML = "FIN";
+                    stop(x);
+                }
+            }, 1000);
+        });
         document.getElementById("submitt").addEventListener("click", () => {
             if (document.getElementById("words").value == words[i]) {
-                i+=1
+                i+=1;
                 let x = setInterval(() => {
                     if (i%3 == 0) {
                         console.log("Owl1");
@@ -168,12 +204,22 @@ How I Wonder What You Are`
                     }
                     if (i >= words.length) {
                         console.log("HERE");
-                        document.getElementById("output").innerHTML = "FIN";
+                        document.getElementById("output").innerHTML = "Nice! Your Score is " + score;
+                        let xhttp = new XMLHttpRequest()
+                        xhttp.onreadystatechange = () => {
+                            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                                // All is good
+                            }
+                        }
+                        xhttp.open("POST", "updateScore", true)
+                        xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded")
+                        xhttp.send(`score=${score}&score2=${score2}`)
                         stop(x);
                     }
                 }, 1000);
             } else {
                 document.getElementById("output").innerHTML = "WRONG: TRY AGAIN";
+                score-=10;
                 i = 0;
             }
             document.getElementById("words").value = "";
