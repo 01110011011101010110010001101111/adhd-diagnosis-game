@@ -1,5 +1,5 @@
 # ADHD Diagnosis Game
-We have designed a game which identifies early signs of ADHD in children by tracking the exhibition of common symptoms such as self-focused behavior.
+We have designed a game which identifies early signs of ADHD in children by tracking the exhibition of common symptoms such as self-focused behavior.<br><strong>If you are interesting in contributing a game to be integrated to this open-source project, please contact me at genericp3rson@gmail.com.</strong>
 
 ## Inspiration
 ADHD is a common mental illness in many children which we've seen throughout our lives. One member drew inspiration from a piano teacher's son who had ADHD but wasn't diagnosed in years. We hope to design a fun and interactive app which allows kids to play games. When they play the games, they are given a "score" for common symptoms of ADHD. Using these games and the scores, obtained through machine learning and statistical procedures, we try to give users an ADHD index.
